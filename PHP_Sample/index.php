@@ -1,6 +1,8 @@
 <?php 
-
 session_start();
+
+// in order to use fpdf, you need to install composer
+
 
 // check apakah user sudah login atau belum berdasarkan session
 if( !isset($_SESSION["login"])) {
@@ -78,15 +80,23 @@ if(isset($_POST["cari"])) {
             left: 210px;
             display: none;
         }
+
+        /* Syntax CSS buat export pdf */
+        /* saat print, hilangkan tombol logout saat halaman hendak diprint*/
+        @media print {
+            .logout, .tambah, .form-cari, .aksi {
+                display: none;
+            }
+        }
     </style>
 
 <body>
 
-<a href = "logout.php">Logout</a>
+<a href = "logout.php" class="logout">Logout</a> | <a href="cetak.php" target="_blank">Cetak</a>
 
 <h1>Daftar Mahasiswa</h1>
 
-<a href = "tambah.php">Tambah Data Mahasiswa</a>
+<a href = "tambah.php" class="tambah">Tambah Data Mahasiswa</a>
 
 <br/>
 
@@ -127,7 +137,7 @@ if(isset($_POST["cari"])) {
         <?php foreach($mahasiswa as $row) : ?>
         <tr>
             <td><?= $row["id"] ?></td>
-            <td>
+            <td class="aksi">
                 <a href = "ubah.php?id=<?=$row["id"]?>">ubah</a>
                 <a href = "hapus.php?id=<?= $row["id"];?>"
                     onclick = "return confirm('yakin?');">hapus</a>
@@ -151,7 +161,7 @@ if(isset($_POST["cari"])) {
 <script src = "js/script.js"></script>
 
 <!-- search function -->
-<form action = "" method = "post"> 
+<form action = "" method = "post" class="form-cari"> 
 
     <input type = "text" name = "keyword" size = "40" autofocus
         placeholder = "masukkan keyword pencarian" autocomplete = "off" id="keyword">
